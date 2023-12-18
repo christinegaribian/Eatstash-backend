@@ -10,6 +10,7 @@ export class RecipesController {
     async create(@Body() recipeDto: RecipeDto) {
         try {
             const newRecipe = await this.recipesService.create(recipeDto);
+            console.log("created new recipe: " + newRecipe);
             return newRecipe;
         } catch (error) {
             throw new HttpException('Failed to create recipe', HttpStatus.INTERNAL_SERVER_ERROR);

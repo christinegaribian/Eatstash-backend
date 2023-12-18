@@ -8,24 +8,25 @@ export class RecipesService {
 
     async create(recipeDto: RecipeDto): Promise<any> {
         // Assuming 'recipes' is the container name
-        return this.cosmosDbService.createItem('recipes', recipeDto);
+        console.log("in the recipe service. dto:    " + recipeDto);
+        return this.cosmosDbService.createItem('Recipes', recipeDto);
     }
 
     async findOne(id: string): Promise<any> {
-        return this.cosmosDbService.getItemById('recipes', id);
+        return this.cosmosDbService.getItemById('Recipes', id);
     }
 
     async findAll(): Promise<any[]> {
-        return this.cosmosDbService.getAllItems('recipes');
+        return this.cosmosDbService.getAllItems('Recipes');
     }
 
     async update(id: string, recipeDto: RecipeDto): Promise<any> {
         // Ensure the id is included in the update data
         const updatedRecipe = { id, ...recipeDto };
-        return this.cosmosDbService.updateItem('recipes', id, updatedRecipe);
+        return this.cosmosDbService.updateItem('Recipes', id, updatedRecipe);
     }
 
     async delete(id: string): Promise<void> {
-        return this.cosmosDbService.deleteItem('recipes', id);
+        return this.cosmosDbService.deleteItem('Recipes', id);
     }
 }
