@@ -16,19 +16,36 @@ export class MealPlansService {
         return this.cosmosDbService.getItemById(MEAL_PLAN_CONTAINER_NAME, id);
     }
 
-    async findByWeek(week: string): Promise<MealPlanDto | null> {
+    async findByWeek(week: string): Promise<MealPlanDto | {}> {
+        // Fetch the meal plan for the week
         const query = {
             query: `SELECT * FROM c WHERE c.week = @week`,
-            parameters: [
-                {
-                    name: '@week',
-                    value: week
-                }
-            ]
+            parameters: [{name: '@week',value: week}]
         };
-
         const { resources: mealPlans } = await this.cosmosDbService.queryItems('MealPlans', query);
-        return mealPlans.length > 0 ? mealPlans[0] : null;
+
+        if (mealPlans.length === 0) {
+            return {};
+        }
+
+        // Fetch each recipe in the meal plan
+        const mealPlan = mealPlans[0];
+        const recipeDetails = await Promise.all(
+            mealPlan.recipeIds.map(async (recipeId) => {
+                const queryForRecipe = {
+                    query: `SELECT * FROM c WHERE c.id = @id`,
+                    parameters: [{ name: '@id', value: recipeId }]
+                };
+
+                const recipeResponse = await this.cosmosDbService.queryItems('Recipes', queryForRecipe);
+                return recipeResponse.resources[0]; // Assuming each ID corresponds to a unique recipe
+            })
+        );
+
+        return {
+            ...mealPlan,
+            recipes: recipeDetails // Include full recipe details in the response
+        };
     }
 
     async findAll(): Promise<any[]> {
