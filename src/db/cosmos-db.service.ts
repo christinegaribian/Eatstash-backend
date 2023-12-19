@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CosmosClient, Database, Container } from '@azure/cosmos';
+import { CosmosClient, Database, Container, SqlQuerySpec } from '@azure/cosmos';
 // const partitionKey = { kind: 'Hash', paths: ['/partitionKey'] }
 
 @Injectable()
@@ -41,6 +41,18 @@ export class CosmosDbService {
             return (await container.item(id).read()).resource;
         } catch (error) {
             // Handle not found error or other errors
+            throw error;
+        }
+    }
+
+    // Read by query
+    async queryItems(containerName: string, querySpec: SqlQuerySpec): Promise<{ resources: any[] }> {
+        try {
+            const container = this.getContainer(containerName);
+            const response = await container.items.query(querySpec).fetchAll();
+            return response; // This includes the 'resources' property
+        } catch (error) {
+            // Handle or throw the error appropriately
             throw error;
         }
     }

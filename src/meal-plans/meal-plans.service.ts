@@ -16,6 +16,21 @@ export class MealPlansService {
         return this.cosmosDbService.getItemById(MEAL_PLAN_CONTAINER_NAME, id);
     }
 
+    async findByWeek(week: string): Promise<MealPlanDto | null> {
+        const query = {
+            query: `SELECT * FROM c WHERE c.week = @week`,
+            parameters: [
+                {
+                    name: '@week',
+                    value: week
+                }
+            ]
+        };
+
+        const { resources: mealPlans } = await this.cosmosDbService.queryItems('MealPlans', query);
+        return mealPlans.length > 0 ? mealPlans[0] : null;
+    }
+
     async findAll(): Promise<any[]> {
         return this.cosmosDbService.getAllItems(MEAL_PLAN_CONTAINER_NAME);
     }

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { MealPlansService } from './meal-plans.service';
 import { MealPlanDto } from './dto/meal-plan.dto';
 
@@ -13,7 +14,14 @@ export class MealPlansController {
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
+        console.log("?")
         return this.mealPlanService.findOne(id);
+    }
+
+    @Get()
+    async findByWeek(@Query('week') week: string) {
+        Logger.log(`findByWeek called with week: ${week}`, 'MealPlanController');
+        return this.mealPlanService.findByWeek(week);
     }
 
     @Get()
