@@ -9,12 +9,13 @@ export class MealPlansController {
 
     @Post()
     async create(@Body() mealPlanDto: MealPlanDto) {
+        Logger.log(`create called with mealPlanDto: ${mealPlanDto}`, 'MealPlanController');
         return this.mealPlanService.create(mealPlanDto);
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        console.log("?")
+        Logger.log(`findOne called with id: ${id}`, 'MealPlanController');
         return this.mealPlanService.findOne(id);
     }
 
@@ -26,16 +27,20 @@ export class MealPlansController {
 
     @Get()
     async findAll() {
+        Logger.log(`findAll called`, 'MealPlanController');
         return this.mealPlanService.findAll();
     }
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() mealPlanDto: MealPlanDto) {
+        Logger.log(`update called with id: ${id}, and mealPlanDto: ${mealPlanDto}`, 'MealPlanController');
+
         return this.mealPlanService.update(id, mealPlanDto);
     }
 
     @Delete(':id')
     async delete(@Param('id') id: string) {
+        Logger.log(`delete called with id: ${id}`, 'MealPlanController');
         return this.mealPlanService.delete(id);
     }
 }
