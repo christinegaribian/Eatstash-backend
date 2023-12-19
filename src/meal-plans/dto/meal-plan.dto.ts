@@ -1,5 +1,10 @@
+import { IsArray, IsDateString, IsString } from 'class-validator';
+
 export class MealPlanDto {
-    readonly date: Date;
-    readonly recipes: string[];
-    // Other relevant fields for creating/updating a meal plan
+    @IsDateString()
+    readonly week: Date; // Representing the start of the week
+
+    @IsArray()
+    @IsString({ each: true })
+    readonly recipeIds: string[]; // Array of recipe IDs
 }

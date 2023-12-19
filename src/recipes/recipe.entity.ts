@@ -5,3 +5,5 @@ export class Recipe {
     instructions: string; // Cooking instructions
     // Other relevant fields, like preparation time, servings, etc.
 }
+
+// TODO: fill this out 
