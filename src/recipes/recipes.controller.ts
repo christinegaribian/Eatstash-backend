@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, HttpStatus, HttpException } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
-import { RecipeDto } from './dto/recipe.dto'; // Assuming you have a DTO for recipes
+import { RecipeDto } from './dto/recipe.dto';
 
 @Controller('recipes')
 export class RecipesController {

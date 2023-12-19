@@ -22,38 +22,43 @@ export class RecipeDto {
   @IsString()
   readonly name: string;
 
+  @IsOptional()
   @IsString()
   readonly description: string;
 
-  @IsDateString()
-  readonly datePublished: Date;
+  //   TODO: make this date
+  @IsString()
+  readonly datePublished: string;
 
+  @IsOptional()
   @IsArray()
   @IsUrl({}, { each: true })
   readonly image: string[];
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   readonly recipeYield: string[];
 
-  @IsISO8601()
+  @IsOptional()
   readonly prepTime: string;
 
   @IsOptional()
-  @IsISO8601()
   readonly cookTime?: string;
 
-  @IsISO8601()
+  @IsOptional()
   readonly totalTime: string;
 
   @IsArray()
   @IsString({ each: true })
   readonly ingredients: string[];
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   readonly recipeCategory: string[];
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   readonly recipeCuisine: string[];
@@ -62,9 +67,12 @@ export class RecipeDto {
   @IsUrl()
   readonly link?: string;
 
-  @IsString()
-  readonly sourceType: string;
+// TODO: this should be parsed and set in server
+//   @IsOptional()
+//   @IsString()
+//   readonly sourceType: string;
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   readonly instructions: string[];
@@ -72,5 +80,6 @@ export class RecipeDto {
   @IsOptional()
   readonly aggregateRating?: AggregateRatingDto;
 
+  @IsOptional()
   readonly author: AuthorDto;
 }
