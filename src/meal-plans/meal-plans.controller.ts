@@ -8,6 +8,7 @@ export class MealPlansController {
     constructor(private readonly mealPlanService: MealPlansService) {}
 
     @Post()
+    // TODO: don't let people create multiple meal plans for the same week
     async create(@Body() mealPlanDto: MealPlanDto) {
         Logger.log(`create called with mealPlanDto: ${mealPlanDto}`, 'MealPlanController');
         return this.mealPlanService.create(mealPlanDto);

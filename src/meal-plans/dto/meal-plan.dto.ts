@@ -1,6 +1,7 @@
-import { IsArray, IsDateString, IsString } from 'class-validator';
+import { IsArray, IsDateString, IsString, IsOptional } from 'class-validator';
 
 export class MealPlanDto {
+    @IsOptional()
     @IsDateString()
     readonly week: Date; // Representing the start of the week
 
