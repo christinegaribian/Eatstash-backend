@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/
 import { Logger } from '@nestjs/common';
 import { MealPlansService } from './meal-plans.service';
 import { MealPlanDto } from './dto/meal-plan.dto';
+import { AppendRecipesDto } from './dto/append-recipes.dto';
 
 @Controller('meal-plans')
 export class MealPlansController {
@@ -37,6 +38,12 @@ export class MealPlansController {
         Logger.log(`update called with id: ${id}, and mealPlanDto: ${mealPlanDto}`, 'MealPlanController');
 
         return this.mealPlanService.update(id, mealPlanDto);
+    }
+
+    @Put(':id/append-recipes')
+    async appendRecipes(@Param('id') id: string, @Body() appendRecipesDto: AppendRecipesDto) {
+        Logger.log(`appendRecipes called with id: ${id}`, 'MealPlanController');
+        return this.mealPlanService.appendRecipes(id, appendRecipesDto);
     }
 
     @Delete(':id')

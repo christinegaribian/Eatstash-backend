@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CosmosDbService } from '../db/cosmos-db.service';
 import { MealPlanDto } from './dto/meal-plan.dto';
+import { AppendRecipesDto } from './dto/append-recipes.dto';
 
 const MEAL_PLAN_CONTAINER_NAME = 'MealPlans';
 
@@ -55,6 +56,18 @@ export class MealPlansService {
     async update(id: string, mealPlanDto: MealPlanDto): Promise<any> {
         const updatedMealPlan = { id, ...mealPlanDto };
         return this.cosmosDbService.updateItem(MEAL_PLAN_CONTAINER_NAME, id, updatedMealPlan);
+    }
+
+    async appendRecipes(id: string, appendRecipesDto: AppendRecipesDto): Promise<any> {
+        const mealPlan = await this.cosmosDbService.getItemById(MEAL_PLAN_CONTAINER_NAME, id);
+        if (!mealPlan) {
+            throw new NotFoundException(`Meal plan with ID ${id} not found`);
+        }
+
+        // Append new recipes and avoid duplicates
+        mealPlan.recipeIds = [...new Set([...mealPlan.recipeIds, ...appendRecipesDto.recipeIds])];
+
+        return this.cosmosDbService.updateItem(MEAL_PLAN_CONTAINER_NAME, id, mealPlan);
     }
 
     async delete(id: string): Promise<void> {
