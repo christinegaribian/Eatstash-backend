@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, HttpStatus, HttpException } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
 import { RecipeDto } from './dto/recipe.dto';
+import { RateRecipeDto } from './dto/rate-recipe.dto';
+import { Logger } from '@nestjs/common';
 
 @Controller('recipes')
 export class RecipesController {
@@ -47,6 +49,12 @@ export class RecipesController {
         } catch (error) {
             throw new HttpException('Failed to update recipe', HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Put(':id/rate')
+    async rateRecipe(@Param('id') id: string, @Body() rateRecipeDto: RateRecipeDto) {
+        Logger.log(`Rate recipe called with id: ${id}, rating: ${rateRecipeDto.rating}`, 'RecipeController');
+        return this.recipesService.rateRecipe(id, rateRecipeDto);
     }
 
     @Delete(':id')

@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CosmosDbService } from '../db/cosmos-db.service';
 import { RecipeDto } from './dto/recipe.dto';
+import { RateRecipeDto } from './dto/rate-recipe.dto';
 
 const RECIPE_CONTAINER_NAME = 'Recipes';
 
@@ -26,6 +27,22 @@ export class RecipesService {
         // Ensure the id is included in the update data
         const updatedRecipe = { id, ...recipeDto };
         return this.cosmosDbService.updateItem(RECIPE_CONTAINER_NAME, id, updatedRecipe);
+    }
+
+    async rateRecipe(id: string, rateRecipeDto: RateRecipeDto): Promise<any> {
+        // Retrieve the recipe by ID
+        const recipe = await this.cosmosDbService.getItemById(RECIPE_CONTAINER_NAME, id);
+        if (!recipe) {
+            throw new NotFoundException(`Recipe with ID ${id} not found`);
+        }
+    
+        // Update the rating
+        recipe.rating = rateRecipeDto.rating;
+    
+        // Save the updated recipe
+        await this.cosmosDbService.updateItem(RECIPE_CONTAINER_NAME, id, recipe);
+    
+        return recipe;
     }
 
     async delete(id: string): Promise<void> {
