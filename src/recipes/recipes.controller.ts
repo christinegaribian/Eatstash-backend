@@ -35,7 +35,7 @@ export class RecipesController {
     @Get()
     async findAll() {
         try {
-            console.log("getting all recipes")
+            // console.log("getting all recipes")
             return await this.recipesService.findAll();
         } catch (error) {
             throw new HttpException('Failed to retrieve recipes', HttpStatus.INTERNAL_SERVER_ERROR);

@@ -6,6 +6,7 @@ import { RecipesController } from './recipes/recipes.controller';
 import { MealPlansController } from './meal-plans/meal-plans.controller';
 import { MealPlansService } from './meal-plans/meal-plans.service';
 import { GroceryListsController } from './grocery-lists/grocery-lists.controller';
+import { GroceryListsService } from './grocery-lists/grocery-lists.service';
 import { DbController } from './db/db.controller';
 import { CosmosDbService } from './db/cosmos-db.service';
 import { RecipesService } from './recipes/recipes.service';
@@ -19,7 +20,7 @@ import { RecipesModule } from './recipes/recipes.module';
     RecipesModule,
   ],
   controllers: [AppController, RecipesController, MealPlansController, GroceryListsController, DbController],
-  providers: [AppService, CosmosDbService, RecipesService, MealPlansService],
+  providers: [AppService, CosmosDbService, RecipesService, MealPlansService, GroceryListsService],
   exports: [CosmosDbService],
 })
 export class AppModule {}
