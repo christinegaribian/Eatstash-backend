@@ -10,6 +10,11 @@ export class UpdateGroceryListDto {
     @IsString({ each: true })
     readonly items: string[]; // Array of item names or IDs
 
+    @IsArray()
+    @IsOptional()
+    @IsString({ each: true })
+    readonly completedItems: string[]; // Array of item names or IDs
+
     @IsString()
     @IsOptional()
     readonly weeklyAd: string;
